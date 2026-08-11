@@ -1,0 +1,27 @@
+debian/contrib/database_init.bin opt/edgestream-api/bin/
+debian/contrib/export_config.py opt/edgestream-api/bin/
+debian/contrib/reset_admin.py  opt/edgestream-api/bin
+debian/contrib/edgestream-audit-rotate  etc/cron.d/
+
+debian/contrib/update/edgestream-update-root opt/edgestream-api/bin/
+debian/contrib/update/edgestream-update@.service usr/lib/systemd/system/
+debian/contrib/update/edgestream-update etc/sudoers.d/
+
+debian/contrib/vpn/edgestream-vpnctl opt/edgestream-api/bin/
+debian/contrib/vpn/edgestream-wg-status.service usr/lib/systemd/system/
+debian/contrib/vpn/edgestream-wg-statusd opt/edgestream-api/bin/
+debian/contrib/vpn/edgestream-vpn etc/sudoers.d/
+
+debian/contrib/ansible-queue/ansible-queue-runner.py opt/edgestream-api/bin/
+debian/contrib/ansible-queue/edgestream-ansible-queue.path usr/lib/systemd/system/
+debian/contrib/ansible-queue/edgestream-ansible-queue.service usr/lib/systemd/system/
+
+debian/contrib/backup/edgestream-backup.service usr/lib/systemd/system/
+debian/contrib/backup/edgestream-backup.timer usr/lib/systemd/system/
+
+debian/edgestream-api.conf  usr/lib/sysusers.d/
+
+# Migrations
+pyproject.toml opt/edgestream-api/
+alembic.ini opt/edgestream-api/
+alembic opt/edgestream-api/

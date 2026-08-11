@@ -1,0 +1,62 @@
+[Unit]
+Description=EdgeStream API (Uvicorn)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+EnvironmentFile=-/etc/default/edgestream-api
+EnvironmentFile=-/etc/edgestream/edgestream-api.secrets
+
+# defaults (overridden by the files above if set)
+Environment=BIND_HOST_IP=127.0.0.1
+Environment=BIND_HOST_PORT=3001
+Environment=UVICORN_WORKERS=4
+Environment=UVICORN_KEEPALIVE=5
+
+User=edgestream
+Group=edgestream
+SupplementaryGroups=adm utmp systemd-journal
+
+StateDirectory=edgestream edgestream/export edgestream/run
+StateDirectoryMode=0750
+
+LogsDirectory=edgestream-api
+LogsDirectoryMode=0750
+
+RuntimeDirectoryPreserve=yes
+
+WorkingDirectory=/opt/edgestream-api
+
+PermissionsStartOnly=yes
+NoNewPrivileges=no
+PrivateTmp=yes
+ProtectSystem=full
+ProtectHome=true
+UMask=0027
+RestrictRealtime=yes
+RestrictSUIDSGID=yes
+RestrictNamespaces=yes
+LockPersonality=yes
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6 AF_PACKET AF_NETLINK
+
+ExecStartPre=/opt/edgestream-api/bin/database_init.bin
+
+# Uvicorn with N workers (IO-bound: cores or cores*2 is fine)
+ExecStart=/opt/edgestream-api/bin/python -m uvicorn edgestream.main:app \
+  --host $BIND_HOST_IP \
+  --port $BIND_HOST_PORT \
+  --workers $UVICORN_WORKERS \
+  --timeout-keep-alive $UVICORN_KEEPALIVE
+
+KillSignal=SIGTERM
+Restart=on-failure
+RestartSec=5s
+TimeoutStopSec=30s
+
+StandardOutput=append:/var/log/edgestream-api/access.log
+StandardError=append:/var/log/edgestream-api/error.log
+
+SyslogIdentifier=edgestream-api
+
+[Install]
+WantedBy=multi-user.target

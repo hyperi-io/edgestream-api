@@ -1,0 +1,145 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+LOG_DIR="/var/log/edgestream-api"
+LOG_FILE="${LOG_DIR}/update-helper.log"
+
+mkdir -p "$LOG_DIR"
+chmod 0750 "$LOG_DIR"
+
+exec >>"$LOG_FILE" 2>&1
+
+echo "==== $(date -Is) edgestream-update-root invoked as UID=$(id -u) ARGS: $*"
+
+if [[ "$(id -u)" -ne 0 ]]; then
+  echo "ERROR: must run as root"
+  exit 100
+fi
+
+# validate pkg names: letters, digits, + . -
+valid_pkg() {
+  [[ "${1:-}" =~ ^[A-Za-z0-9.+-]+$ ]]
+}
+
+wait_dpkg_locks() {
+  # best-effort wait up to 120s for common apt/dpkg locks
+  timeout 120s bash -c '
+    while fuser /var/lib/dpkg/lock-frontend >/dev/null 2>&1 \
+       || fuser /var/lib/dpkg/lock >/dev/null 2>&1 \
+       || fuser /var/cache/apt/archives/lock >/dev/null 2>&1; do
+      sleep 1
+    done
+  ' || true
+}
+
+unescape_systemd() {
+  # systemd-escape --unescape is the gold standard for reversing %i
+  systemd-escape --unescape "$1"
+}
+
+do_refresh() {
+  export DEBIAN_FRONTEND=noninteractive
+  wait_dpkg_locks
+  echo "[refresh] apt-get update starting…"
+  apt-get update
+  echo "[refresh] apt-get update OK"
+}
+
+do_upgrade() {
+  # Accept packages in:
+  #   - $1 as "pkg1,pkg2" (comma-separated)
+  #   - or remaining args as ["pkg1" "pkg2" ...]
+  local first="${1:-}"
+  shift || true
+
+  local -a pkgs_csv=()
+  if [[ -n "$first" ]]; then
+    # If first contains commas, split on commas; else treat as a single pkg and add remaining args too
+    if [[ "$first" == *","* ]]; then
+      IFS=',' read -r -a pkgs_csv <<< "$first"
+    else
+      pkgs_csv+=("$first")
+      # append any remaining space-separated args
+      if [[ $# -gt 0 ]]; then
+        pkgs_csv+=("$@")
+      fi
+    fi
+  else
+    # no first arg, use whatever is left
+    if [[ $# -gt 0 ]]; then
+      pkgs_csv=("$@")
+    fi
+  fi
+
+  local -a pkgs=()
+  local p
+  for p in "${pkgs_csv[@]}"; do
+    # trim
+    p="$(echo "$p" | xargs)"
+    [[ -z "$p" ]] && continue
+    if valid_pkg "$p"; then
+      pkgs+=("$p")
+    else
+      echo "ERROR: invalid package: $p"
+      exit 101
+    fi
+  done
+
+  if [[ ${#pkgs[@]} -eq 0 ]]; then
+    echo "ERROR: no packages specified"
+    exit 102
+  fi
+
+  export DEBIAN_FRONTEND=noninteractive
+  wait_dpkg_locks
+  echo "[upgrade] apt-get update starting…"
+  apt-get update
+  echo "[upgrade] apt-get install --only-upgrade -y ${pkgs[*]}"
+  apt-get install --only-upgrade -y "${pkgs[@]}"
+  echo "[upgrade] success"
+}
+
+cmd_raw="${1:-}"
+cmd="$(unescape_systemd "$cmd_raw")"
+
+case "$cmd" in
+  refresh)
+    do_refresh
+    ;;
+
+  upgrade:*)
+    # form: "upgrade:pkg1,pkg2"
+    pkgs_arg="${cmd#upgrade:}"
+    do_upgrade "$pkgs_arg"
+    ;;
+
+  upgrade\ *)
+    # form: "upgrade pkg1,pkg2" OR "upgrade pkg1 pkg2"
+    rest="${cmd#upgrade }"
+    # If rest contains commas, pass as single arg; else split on spaces
+    if [[ "$rest" == *","* ]]; then
+      do_upgrade "$rest"
+    else
+      # word-split intentionally here
+      # shellcheck disable=SC2206
+      parts=($rest)
+      do_upgrade "${parts[@]}"
+    fi
+    ;;
+
+  upgrade)
+    # form: "upgrade" "<pkgs...>" (unlikely with systemd, but allow it)
+    shift || true
+    do_upgrade "${1:-}" "${@:2}"
+    ;;
+
+  *)
+    cat <<EOF
+Usage:
+  edgestream-update-root refresh
+  edgestream-update-root upgrade:pkg1,pkg2
+  edgestream-update-root upgrade <pkg1,pkg2,…>   # or space-separated
+EOF
+    exit 64
+    ;;
+esac

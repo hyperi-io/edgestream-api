@@ -1,0 +1,36 @@
+[Unit]
+Description=EdgeStream privileged update (%i)
+Wants=network-online.target
+After=network-online.target
+Documentation=man:apt-get(8)
+
+[Service]
+Type=oneshot
+User=root
+Group=root
+
+# Required for update service to function
+NoNewPrivileges=no
+RestrictSUIDSGID=no
+
+PrivateTmp=yes
+ProtectSystem=no
+ProtectHome=read-only
+LockPersonality=yes
+RestrictNamespaces=yes
+RestrictRealtime=yes
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+UMask=0027
+
+# Allow apt/dpkg writes while ProtectSystem=full
+ReadWritePaths=/etc/apt /var/lib/apt /var/cache/apt /var/lib/dpkg /var/log/edgestream-api
+
+# Instance argument: either "refresh" or "upgrade:<pkg1,pkg2>"
+# We split inside the script.
+ExecStart=/opt/edgestream-api/bin/edgestream-update-root %i
+
+# Reasonable timeouts
+TimeoutStartSec=15min
+
+[Install]
+WantedBy=multi-user.target

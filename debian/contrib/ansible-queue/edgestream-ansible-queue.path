@@ -1,0 +1,12 @@
+[Unit]
+Description=Watch EdgeStream Ansible queue for new jobs
+
+[Path]
+# Must match the queue directory your app writes to:
+PathModified=/var/lib/edgestream/ansible_queue
+
+# This MUST point to the exact .service name above
+Unit=edgestream-ansible-queue.service
+
+[Install]
+WantedBy=multi-user.target

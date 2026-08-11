@@ -1,0 +1,6 @@
+# .gitattributes
+* text=auto
+debian/** text eol=lf
+Makefile text eol=lf
+*.service text eol=lf
+*.sh text eol=lf

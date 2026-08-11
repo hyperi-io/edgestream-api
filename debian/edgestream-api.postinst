@@ -1,0 +1,81 @@
+#!/bin/sh
+# edgestream-api postinst
+set -eu
+
+# The first argument is the action (configure), the second is the version being upgraded from
+ACTION="${1:-}"
+PREVIOUS_VERSION="${2:-}"
+
+case "$ACTION" in
+  configure)
+    # 1. PERMISSIONS & SETUP (Run on both fresh install and upgrade)
+    chmod 0755 /opt/edgestream-api/bin/database_init.bin 2>/dev/null || true
+    chmod 0755 /opt/edgestream-api/bin/edgestream-update-root 2>/dev/null || true
+    chmod 0400 /etc/sudoers.d/edgestream-update 2>/dev/null || true
+    chmod 0400 /etc/sudoers.d/edgestream-vpn 2>/dev/null || true
+    chmod 0755 /opt/edgestream-api/bin/export_config.py 2>/dev/null || true
+    chmod 0755 /opt/edgestream-api/bin/reset_admin.py 2>/dev/null || true
+    chmod 0755 /opt/edgestream-api/bin/ansible-queue-runner.py 2>/dev/null || true
+    chmod 0755 /opt/edgestream-api/bin/edgestream-vpnctl 2>/dev/null || true
+    chmod 0755 /opt/edgestream-api/bin/edgestream-wg-statusd 2>/dev/null || true
+    chmod 0644 /etc/cron.d/edgestream-audit-rotate 2>/dev/null || true
+
+    ln -sf /opt/edgestream-api/bin/reset_admin.py /usr/bin/edgestream-admin
+
+    if command -v systemd-sysusers >/dev/null 2>&1; then
+      systemd-sysusers >/dev/null 2>&1 || true
+    fi
+
+    if command -v systemd-tmpfiles >/dev/null 2>&1; then
+      systemd-tmpfiles --create >/dev/null 2>&1 || true
+    fi
+
+    # 2. SECRETS (Run on both to ensure perms stay correct after package updates)
+    if [ -d /etc/edgestream ]; then
+      chown root:root /etc/edgestream 2>/dev/null || true
+      chmod 0755 /etc/edgestream 2>/dev/null || true
+    fi
+
+    if [ -f /etc/edgestream/edgestream-api.secrets ]; then
+      chown root:edgestream /etc/edgestream/edgestream-api.secrets 2>/dev/null || true
+      chmod 0640 /etc/edgestream/edgestream-api.secrets 2>/dev/null || true
+    fi
+
+    # 3. RELOAD SYSTEMD
+    systemctl daemon-reload >/dev/null 2>&1 || true
+
+    # 4. RESTART SERVICES (Conditional)
+    if [ -n "$PREVIOUS_VERSION" ]; then
+      echo "Upgrading from $PREVIOUS_VERSION, restarting services..."
+
+      # Restart API
+      systemctl restart edgestream-api >/dev/null 2>&1 || true
+
+      # Restart Queue Runner (The addition you requested)
+      systemctl restart edgestream-ansible-queue.service >/dev/null 2>&1 || true
+
+      # Restart Wireguard stats
+      systemctl restart edgestream-wg-status.service >/dev/null 2>&1 || true
+    else
+      echo "Fresh installation detected, enabling services..."
+
+      # Start services for the first time
+      systemctl enable --now edgestream-api.service >/dev/null 2>&1 || true
+      systemctl enable --now edgestream-ansible-queue.service edgestream-ansible-queue.path >/dev/null 2>&1 || true
+      systemctl enable --now edgestream-wg-status.service >/dev/null 2>&1 || true
+    fi
+
+    # 5. BACKUP TIMER (Always ensure enabled)
+    systemctl enable --now edgestream-backup.timer >/dev/null 2>&1 || true
+    systemctl disable --now edgestream-backup.service >/dev/null 2>&1 || true
+    ;;
+
+  abort-upgrade|abort-remove|abort-deconfigure) ;;
+
+  *)
+    echo "postinst called with unknown argument \`$1'" >&2
+    exit 1
+    ;;
+esac
+
+exit 0

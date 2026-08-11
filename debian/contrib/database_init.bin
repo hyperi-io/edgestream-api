@@ -1,0 +1,51 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Redirect output to journal
+exec 1> >(systemd-cat -t edgestream-dbinit) 2>&1
+
+SERVICE_USER="${SERVICE_USER:-edgestream}"
+STATE_DIR="${STATE_DIR:-/var/lib/edgestream}"
+SECRETS_FILE="${SECRETS_FILE:-/etc/edgestream/edgestream-api.secrets}"
+PYTHON="/opt/edgestream-api/bin/python"
+
+# 1. Root Check (Required for creating /etc/edgestream and managing secrets)
+if [ "$(id -u)" -ne 0 ]; then
+  echo "ERROR: must run as root"
+  exit 100
+fi
+
+# 2. Ensure Filesystem Structure
+install -d -m 0755 -o root -g root /etc/edgestream
+install -d -m 0750 -o "$SERVICE_USER" -g "$SERVICE_USER" "$STATE_DIR"
+
+# 3. Handle Secrets (Root-only operation)
+if [ ! -f "$SECRETS_FILE" ]; then
+  echo "SECRETS: Generating new secrets file..."
+  umask 077
+
+  ADMIN_PASS="$(openssl rand -base64 12)"
+  JWT_SECRET="$(openssl rand -hex 32)"
+  EDGESTREAM_QUEUE_TOKEN="$(openssl rand -hex 32)"
+
+  cat >"$SECRETS_FILE" <<EOF
+# EDGESTREAM SYSTEM SECRETS
+EDGESTREAM_DEFAULT_ADMIN_EMAIL=admin@edgestream.local
+EDGESTREAM_DEFAULT_ADMIN_PASSWORD=$ADMIN_PASS
+JWT_SECRET=$JWT_SECRET
+EDGESTREAM_QUEUE_TOKEN=$EDGESTREAM_QUEUE_TOKEN
+EOF
+  chown root:"$SERVICE_USER" "$SECRETS_FILE"
+  chmod 0640 "$SECRETS_FILE"
+fi
+
+# 4. Run the Python Database Initializer
+# We run this as the SERVICE_USER so the SQLite file is owned by the app, not root.
+echo "INIT: Handing over to Python database_init module..."
+
+# We use 'runuser' to drop privileges but keep the environment variables
+# (like SQLALCHEMY_DATABASE_URI)
+/usr/sbin/runuser -u "$SERVICE_USER" --preserve-environment -- \
+  "$PYTHON" -m edgestream.database_init
+
+echo "SUCCESS: Database and secrets are ready."

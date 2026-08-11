@@ -1,0 +1,5 @@
+# /etc/cron.d/edgestream-audit-rotate
+
+# Run every Sunday at 00:00 (Midnight)
+# m h dom mon dow user  command
+0 0 * * 0 root /opt/edgestream-api/bin/python3 -m edgestream.core.utils.audit_maintenance >> /var/log/edgestream-api/audit_rotation.log 2>&1

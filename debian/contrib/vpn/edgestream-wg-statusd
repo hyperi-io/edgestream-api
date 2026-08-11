@@ -1,0 +1,84 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+OUT_DIR="/run/edgestream"
+OUT_FILE="${OUT_DIR}/wg-status.json"
+INTERVAL_SEC="${INTERVAL_SEC:-2}"
+
+mkdir -p "$OUT_DIR"
+chmod 0755 "$OUT_DIR"
+
+# Write atomically to avoid partial reads
+write_json() {
+  local tmp
+  tmp="$(mktemp "${OUT_FILE}.XXXXXX")"
+
+  # Output format: first line is interface, next lines are peers
+  # We'll build a small JSON map: { "<iface>": { "peers":[...]} }
+  python3 - <<'PY' >"$tmp"
+import json, subprocess, time
+
+def run(cmd):
+    r = subprocess.run(cmd, capture_output=True, text=True)
+    return r.returncode, r.stdout, r.stderr
+
+rc, out, err = run(["wg", "show", "all", "dump"])
+now = int(time.time())
+
+data = {"generated_at": now, "interfaces": {}}
+
+if rc != 0:
+    data["error"] = (err or out or "").strip()
+else:
+    lines = [ln for ln in out.splitlines() if ln.strip()]
+    # group by interface: interface line has 5 cols; peer line has many cols
+    # wg dump format:
+    # iface: private_key public_key listen_port fwmark
+    # peer:  public_key preshared_key endpoint allowed_ips latest_handshake rx_bytes tx_bytes persistent_keepalive
+    cur = None
+    for ln in lines:
+      parts = ln.split("\t")
+      if len(parts) == 5:
+          cur = parts[0]
+          data["interfaces"][cur] = {
+              "listen_port": int(parts[3]) if parts[3].isdigit() else None,
+              "fwmark": parts[4] if parts[4] != "off" else None,
+              "peers": [],
+          }
+      elif len(parts) >= 9:
+          # Index 0 is interface name
+          # Index 1 is public_key
+          # Index 2 is preshared_key
+          cur = parts[0]
+          if cur not in data["interfaces"]:
+              data["interfaces"][cur] = {"peers": []}
+
+          endpoint = parts[3] if parts[3] != "(none)" else None
+          allowed_ips = parts[4]
+          latest = int(parts[5]) if parts[5].isdigit() else 0
+          rx = int(parts[6]) if parts[6].isdigit() else 0
+          tx = int(parts[7]) if parts[7].isdigit() else 0
+
+          uptime = (now - latest) if latest > 0 else None
+
+          data["interfaces"][cur]["peers"].append({
+              "endpoint": endpoint,
+              "allowed_ips": allowed_ips,
+              "latest_handshake": latest if latest > 0 else None,
+              "uptime_seconds": uptime,
+              "rx_bytes": rx,
+              "tx_bytes": tx,
+          })
+
+print(json.dumps(data, indent=2, sort_keys=True))
+PY
+
+  chmod 0644 "$tmp"
+  mv "$tmp" "$OUT_FILE"
+}
+
+while true; do
+  write_json || true
+  sleep "$INTERVAL_SEC"
+done
+EOF

@@ -1,0 +1,12 @@
+# Type Path                                Mode  User       Group      Age Argument
+d /var/lib/edgestream                      0750  edgestream  edgestream  -   -
+d /var/lib/edgestream/export               0750  edgestream  edgestream  -   -
+d /var/lib/edgestream/runner               0750  edgestream  edgestream  -   -
+d /var/lib/edgestream/runner/artifacts     0750  edgestream  edgestream  -   -
+d /var/lib/edgestream/ansible_cache        0700  edgestream  edgestream  -   -
+d /var/lib/edgestream/audit_backups        0750  edgestream  edgestream  -   -
+d /var/log/edgestream-api                  0750  edgestream  edgestream  -   -
+d /var/lib/edgestream/ansible-queue        0750  edgestream  edgestream  -   -
+
+# Make sure secrets dir is traversable/readable by the service user
+d /etc/edgestream                          0755  root       root       -   -

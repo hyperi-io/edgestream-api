@@ -1,0 +1,20 @@
+# /etc/systemd/system/edgestream-backup.service
+[Unit]
+Description=EdgeStream config backup (one-shot)
+
+[Service]
+Type=oneshot
+User=edgestream
+Group=edgestream
+
+# Load the same vars your API uses
+EnvironmentFile=-/etc/default/edgestream-api
+
+Environment=PYTHONPATH=/opt/edgestream-api
+
+WorkingDirectory=/opt/edgestream-api
+
+ExecStartPre=/bin/sh -c 'test -r /etc/edgestream/edgestream-api.secrets || exit 0'
+ExecStart=/opt/edgestream-api/bin/python -m edgestream.cli.backup_once
+SuccessExitStatus=0
+

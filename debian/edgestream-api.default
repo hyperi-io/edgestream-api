@@ -1,0 +1,54 @@
+# /etc/default/edgestream-api
+# Host and port to bind (Nginx proxies to this)
+BIND_HOST_IP=127.0.0.1
+BIND_HOST_PORT=3001
+
+# Environment: prod|dev (dev enables localhost CORS convenience)
+ENV=prod
+API_V1_STR=/api/v1
+
+# DB now in /var/lib/edgestream
+SQLALCHEMY_DATABASE_URI=sqlite:////var/lib/edgestream/edgestreamhub.db?check_same_thread=False
+
+EDGESTREAM_CONFIGURATION=settings.yml
+EDGESTREAM_CONFIGURATION_DIR=/var/lib/edgestream/export/
+EDGESTREAM_TASK=configure.yml
+EDGESTREAM_TASK_DIR=/opt/edgestream-core/playbooks/
+
+# Source and Destination Template paths
+EDGESTREAM_TEMPLATE_CORE_BASE_PATH=/usr/share/edgestream/templates
+EDGESTREAM_TEMPLATE_CONTRIB_BASE_PATH=/etc/edgestream/templates
+
+# Reserverd ports
+RESERVED_PORTS=[3000,3001,53,5355,8086,8080]
+
+# Certificate paths
+CERTIFICATE_PATH=/etc/edgestream/ssl/
+# CA_CERT_PATH=
+# CERT_PATH=
+# KEY_FILE_PATH=
+
+# VPN
+EDGESTREAM_VPNCTL=/opt/edgestream-api/bin/edgestream-vpnctl
+
+# WEC
+PYWEC_DB=/var/lib/pywec/pywec.db
+
+# Site-specific (non-secret)
+AUTH0_DOMAIN=auth0.com
+AUTH0_CLIENT_ID=abcdef
+
+# Web UI (non-secret)
+EDGESTREAM_WEB_UI_INFLUX_ORG=edgestream
+EDGESTREAM_WEB_UI_INFLUX_URL="/influx/"
+EDGESTREAM_WEB_UI_INFLUX_LOCAL_STORAGE_KEY=influx_visible_series
+EDGESTREAM_WEB_UI_INFLUX_UPDATE_INTERVAL=5000
+
+# Gunicorn tuning
+UVICORN_WORKERS=4
+UVICORN_KEEPALIVE=5
+FORWARDED_ALLOW_IPS=*
+
+# CORS
+# In prod, list trusted origins explicitly; in dev, localhost is auto-allowed by the app
+# BACKEND_CORS_ORIGINS=["https://ui.example.com"]

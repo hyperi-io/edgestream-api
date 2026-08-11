@@ -1,0 +1,10 @@
+
+*.pyc
+.DS_Store
+.idea
+.venv
+/node_modules
+/venv
+edgestream/edgestreamhub.db
+/Videos/share/
+.env

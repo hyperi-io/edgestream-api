@@ -1,0 +1,29 @@
+Source: edgestream-api
+Section: admin
+Priority: optional
+Standards-Version: 4.6.2
+Maintainer: Hyperi Support <support@hyperi.io>
+Build-Depends:
+  debhelper-compat (= 13),
+  dh-virtualenv,
+  dh-python,
+  make,
+  python3,
+  python3-venv,
+  python3-dev,
+  tar
+Homepage: https://github.com/hyperi-io
+
+Package: edgestream-api
+Architecture: all
+Depends:
+  ${misc:Depends},
+  systemd,
+  uuid-runtime,
+  openssl,
+  sqlite3
+Description: EdgeStream Hub API
+ EdgeStream Hub is a network security and event collection appliance
+ providing event collection and aggregation.
+ .
+ Licensed under the Functional Source License 1.1 (ALv2 Future License).

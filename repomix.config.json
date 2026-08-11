@@ -1,0 +1,19 @@
+{
+  "output": {
+    "filePath": "repomix-output.xml",
+    "style": "xml"
+  },
+  "include": [],
+  "exclude": [
+    "**/.venv/**",
+    "**/venv/**",
+    "**/__pycache__/**",
+    "**/*.pyc",
+    "**/.pytest_cache/**",
+    "**/.mypy_cache/**",
+    "**/*.egg-info/**",
+    "**/build/**",
+    "**/dist/**",
+    "**/.pybuild/**"
+  ]
+}

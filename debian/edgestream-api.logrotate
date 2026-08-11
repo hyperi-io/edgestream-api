@@ -1,0 +1,9 @@
+/var/log/edgestream-api/*.log {
+  daily
+  rotate 7
+  missingok
+  notifempty
+  compress
+  delaycompress
+  create 0640 edgestream adm
+}

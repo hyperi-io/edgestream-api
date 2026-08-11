@@ -1,0 +1,14 @@
+# Allow the API service account to execute systemctl commands for VPN services without a password
+edgestream ALL=(ALL) NOPASSWD: /usr/bin/systemctl start openvpn-client@*
+edgestream ALL=(ALL) NOPASSWD: /usr/bin/systemctl stop openvpn-client@*
+edgestream ALL=(ALL) NOPASSWD: /usr/bin/systemctl restart openvpn-client@*
+edgestream ALL=(ALL) NOPASSWD: /usr/bin/systemctl start wg-quick@*
+edgestream ALL=(ALL) NOPASSWD: /usr/bin/systemctl stop wg-quick@*
+edgestream ALL=(ALL) NOPASSWD: /usr/bin/systemctl restart wg-quick@*
+edgestream ALL=(ALL) NOPASSWD: /usr/bin/systemctl is-enabled openvpn-client@*
+edgestream ALL=(ALL) NOPASSWD: /usr/bin/systemctl is-enabled wg-quick@*
+edgestream ALL=(ALL) NOPASSWD: /usr/bin/systemctl show openvpn-client@*
+edgestream ALL=(ALL) NOPASSWD: /usr/bin/systemctl show wg-quick@*
+edgestream ALL=(ALL) NOPASSWD: /usr/bin/journalctl -u openvpn-client@*
+edgestream ALL=(ALL) NOPASSWD: /usr/bin/journalctl -u wg-quick@*
+edgestream ALL=(ALL) NOPASSWD: /usr/bin/cat /run/openvpn-client/status-*.log

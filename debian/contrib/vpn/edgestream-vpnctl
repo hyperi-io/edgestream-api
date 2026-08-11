@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+action="${1:?start|stop|restart}"
+type="${2:?openvpn|wireguard}"
+name="${3:?profile-name}"
+
+case "$type" in
+  openvpn)   unit="openvpn-client@${name}.service" ;;
+  wireguard) unit="wg-quick@${name}.service" ;;
+  *) echo "invalid type"; exit 2 ;;
+esac
+
+# Use sudo non-interactively
+exec sudo /usr/bin/systemctl "$action" "$unit"

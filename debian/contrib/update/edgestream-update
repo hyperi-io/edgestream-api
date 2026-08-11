@@ -1,0 +1,1 @@
+edgestream ALL=(root) NOPASSWD: /usr/bin/systemctl start --wait edgestream-update@*

@@ -1,0 +1,22 @@
+# pyproject.toml
+
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "edgestream-api"
+version = "0.1.0"
+description = "EdgeStream API"
+readme = "README.md"
+authors = [{ name = "EdgeStream Support", email = "edgestream-support@hyperi.io" }]
+requires-python = ">=3.11"
+
+# Find the package "edgestream" at repo root
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["edgestream*"]
+
+# Tell setuptools to include package data (MANIFEST.in will define which files)
+[tool.setuptools]
+include-package-data = true

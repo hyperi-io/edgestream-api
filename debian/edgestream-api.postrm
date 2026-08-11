@@ -1,0 +1,25 @@
+#!/bin/sh
+#
+# "edgestream-api" postinst script
+#
+set +e
+
+#DEBHELPER#
+
+# Add your own code here, note that some "dh_venv_*" env vars are available,
+# at least these ones:
+#
+#   dh_venv_package         Name of the Debian package
+#   dh_venv_install_dir     Root directory for the installed virtualenv
+
+echo "Attempting to stop edgestream-api"
+systemctl stop edgestream-api >/dev/null 2>&1
+
+# Remove symlink if exists
+rm -f /usr/bin/edgestream-admin
+
+# Remove configuration directory if empty
+[ -d /etc/edgestream/db ] && rmdir --ignore-fail-on-non-empty /etc/edgestream/db
+[ -d /etc/edgestream ] && rmdir --ignore-fail-on-non-empty /etc/edgestream
+
+exit 0

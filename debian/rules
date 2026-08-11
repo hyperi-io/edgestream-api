@@ -1,0 +1,48 @@
+#!/usr/bin/make -f
+
+export DH_VIRTUALENV_INSTALL_ROOT=/opt
+SNAKE=/usr/bin/python3
+
+EXTRA_REQUIREMENTS=--upgrade-pip --preinstall "setuptools>=68" --preinstall "wheel"
+DH_VENV_ARGS=--builtin-venv --python=$(SNAKE) $(EXTRA_REQUIREMENTS) \
+             --requirements requirements-prod.txt \
+             --extra-pip-arg="--no-cache-dir" \
+             --extra-pip-arg="--progress-bar=off" \
+             --extra-pip-arg="--log=$(CURDIR)/pip-install.log"
+
+%:
+	# Make sure dh_virtualenv is part of the sequence
+	dh $@ --with python-virtualenv
+
+# Avoid pybuild phases (since you're not using setup.py/pybuild)
+override_dh_auto_configure:
+override_dh_auto_build:
+override_dh_auto_test:
+override_dh_auto_install:
+
+# Create the venv, then install YOUR project into it
+override_dh_virtualenv:
+	dh_virtualenv $(DH_VENV_ARGS)
+	@echo "# Locate staged venv via site-packages and prune safely"
+	VENV_SITE="$$(find debian -type d -path '*/opt/*/lib/python*/site-packages' -print -quit)"; \
+	if [ -n "$$VENV_SITE" ]; then \
+	  VENV_ROOT="$${VENV_SITE%/lib/python*/site-packages}"; \
+	  echo "# Pruning venv under $$VENV_ROOT"; \
+	  find "$$VENV_ROOT" -type d -name '__pycache__' -prune -exec rm -rf {} + || true; \
+	  find "$$VENV_ROOT/lib" -type d -name 'tests' -prune -exec rm -rf {} + || true; \
+	  rm -rf "$$VENV_ROOT"/lib/python*/site-packages/setuptools/_distutils/tests 2>/dev/null || true; \
+	  rm -rf "$$VENV_ROOT"/.cache 2>/dev/null || true; \
+	fi
+
+# Keep packaging metadata; your project Makefile won't nuke debian/*
+override_dh_auto_clean:
+	@echo "Skipping dh_auto_clean to preserve packaging metadata"
+
+# Ensure sudoers ends up 0440 if you install one via debian/install
+override_dh_fixperms:
+	dh_fixperms
+	[ -e debian/edgestream-api/etc/sudoers.d/edgestream-api ] && chmod 0440 debian/edgestream-api/etc/sudoers.d/edgestream-api || true
+
+# Optional: restart service on upgrade (defaults are ok too)
+override_dh_installsystemd:
+	dh_installsystemd -r
