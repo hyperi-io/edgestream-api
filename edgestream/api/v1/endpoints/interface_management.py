@@ -15,6 +15,7 @@ from edgestream.schemas.network.ip_management import (
     IPMgmtResponse,
     IPMgmtRecord
 )
+from edgestream.services.interfaces import get_interfaces
 
 router = APIRouter()
 
@@ -40,6 +41,20 @@ def fetch_ip_address_management(
                 mgmt = record
             elif item.type == "event":
                 event = record
+
+        if not mgmt:
+            detected = get_interfaces()
+            if detected:
+                primary = detected[0]
+                mgmt = IPMgmtRecord(
+                    iface=primary.get("device", ""),
+                    family="ipv4",
+                    dhcp=True,
+                    ip_address=primary.get("ip_address"),
+                    netmask=primary.get("netmask"),
+                    gateway=primary.get("gateway"),
+                    default=True,
+                )
 
         return IPMgmtResponse(mgmt=mgmt, event=event)
 
