@@ -234,13 +234,17 @@ def _login() -> Optional[str]:
     pw = _read_cli_auth_token(_secrets_path)
     if not pw:
         if LOGIN_REQUIRED_DEFAULT and not API_TOKEN:
-            log.error("Required CLI identity details missing (check env or %s) and no polling auth found.", _secrets_path)
+            log.error(
+                "Required CLI identity details missing (check env or %s) and no polling auth found.",
+                _secrets_path,
+            )
         else:
             log.warning("CLI identity details not found in env or %s.", _secrets_path)
         return None
 
     s = requests.Session()
 
+    # Attempt form-encoded login
     try:
         r = s.post(url, data={"username": _login_user, "password": pw}, timeout=10)
         if r.status_code < 400:
@@ -248,9 +252,10 @@ def _login() -> Optional[str]:
             tok = data.get("access_token") or data.get("token")
             if tok:
                 return tok
-    except Exception as e:
-        log.warning("Login (form) error: %s", e)
+    except Exception:
+        log.warning("Login (form) failed due to network/request error.")
 
+    # Attempt JSON username login
     try:
         r = s.post(url, json={"username": _login_user, "password": pw}, timeout=10)
         if r.status_code < 400:
@@ -258,9 +263,10 @@ def _login() -> Optional[str]:
             tok = data.get("access_token") or data.get("token")
             if tok:
                 return tok
-    except Exception as e:
-        log.warning("Login (json username) error: %s", e)
+    except Exception:
+        log.warning("Login (json username) failed due to network/request error.")
 
+    # Attempt JSON email login
     try:
         r = s.post(url, json={"email": _login_user, "password": pw}, timeout=10)
         if r.status_code < 400:
@@ -269,9 +275,9 @@ def _login() -> Optional[str]:
             if tok:
                 return tok
         else:
-            log.error("Login failed (%s): %s", r.status_code, r.text[:300])
-    except Exception as e:
-        log.error("Login (json email) error: %s", e)
+            log.error("Login failed with status code %s for user %s", r.status_code, _login_user)
+    except Exception:
+        log.error("Login (json email) failed due to network/request error for user %s", _login_user)
 
     return None
 
