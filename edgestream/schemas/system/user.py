@@ -23,7 +23,7 @@ class UserBase(ESBaseModel):
     @classmethod
     def check_email(cls, value: str) -> str:
         """Validates format and enforces lowercase normalization."""
-        email_regex = r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-.]+)*$"
+        email_regex = r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)+$"
         if not re.match(email_regex, value):
             raise ValueError("Invalid email address format")
         return value.lower()
