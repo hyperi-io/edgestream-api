@@ -46,7 +46,7 @@ PROCESSED_DIR = os.path.join(QUEUE_DIR, "processed")
 FAILED_DIR = os.path.join(QUEUE_DIR, "failed")
 
 DEFAULT_USER = "cli_access@edgestream.local"
-DEFAULT_SECRETS = "/etc/edgestream/edgestream-api.secrets"
+DEFAULT_CONFIG_AUTH_FILE = "/etc/edgestream/edgestream-api.secrets"
 
 LOGIN_PATH = "/auth/login"
 LOGIN_REQUIRED_DEFAULT = False
@@ -56,7 +56,7 @@ DEFAULTS_FILE = os.environ.get("EDGESTREAM_DEFAULTS_FILE", "/etc/default/edgestr
 _running = True
 _bearer: Optional[str] = None
 _login_user: str = DEFAULT_USER
-_secrets_path: str = DEFAULT_SECRETS
+_config_auth_path: str = DEFAULT_CONFIG_AUTH_FILE
 _no_login: bool = False
 
 _RE_RECAP_KV = re.compile(r"(\w+)=([0-9]+)")
@@ -208,12 +208,12 @@ def _write_extravars(job: dict, job_art_dir: str) -> Optional[str]:
     return path
 
 # -------------------------- Auth helpers --------------------------
-def _read_cli_auth_token(secrets_path: str) -> Optional[str]:
+def _read_cli_auth_token(path: str) -> Optional[str]:
     env_tok = os.environ.get("CLI_AUTH_TOKEN")
     if env_tok:
         return env_tok.strip()
     try:
-        with open(secrets_path, "r", encoding="utf-8") as fh:
+        with open(path, "r", encoding="utf-8") as fh:
             for line in fh:
                 line = line.strip()
                 if not line or line.startswith("#"):
@@ -231,15 +231,12 @@ def _read_cli_auth_token(secrets_path: str) -> Optional[str]:
 def _login() -> Optional[str]:
     base = API_URL
     url = f"{base}{LOGIN_PATH}"
-    pw = _read_cli_auth_token(_secrets_path)
+    pw = _read_cli_auth_token(_config_auth_path)
     if not pw:
         if LOGIN_REQUIRED_DEFAULT and not API_TOKEN:
-            log.error(
-                "Required CLI identity details missing (check env or %s) and no polling auth found.",
-                _secrets_path,
-            )
+            log.error("Required CLI authentication credentials missing and no polling token found.")
         else:
-            log.warning("CLI identity details not found in env or %s.", _secrets_path)
+            log.warning("CLI authentication credentials not found in environment or configuration file.")
         return None
 
     s = requests.Session()
@@ -298,7 +295,7 @@ def _post_update(job_id: str, payload: Dict[str, Any]) -> None:
                 headers = _auth_header()
                 r = requests.post(url, json=payload, headers=headers, timeout=5)
         if r.status_code >= 400:
-            raise requests.HTTPError(f"{r.status_code} {r.text[:300]}")
+            raise requests.HTTPError(f"{r.status_code}")
     except Exception as e:
         log.warning("Failed to post status update for %s: %s", job_id, e)
 
@@ -375,7 +372,7 @@ def _run_task(job: dict) -> int:
     env = os.environ.copy()
 
     # Ensure we run inside the playbooks directory so its ansible.cfg is used
-    cwd = PLAYBOOK_DIR.rstrip("/")  # safe for join in logs
+    cwd = PLAYBOOK_DIR.rstrip("/")
 
     cfg_path = os.path.join(cwd, "ansible.cfg")
     if os.path.exists(cfg_path):
@@ -424,16 +421,16 @@ def _handle_signal(signum, frame):  # noqa: ARG001
 def _parse_args(argv: list[str]) -> argparse.Namespace:
     p = argparse.ArgumentParser(description="EdgeStream Ansible Queue Runner")
     p.add_argument("--user", default=DEFAULT_USER, help=f"Login username (default: {DEFAULT_USER})")
-    p.add_argument("--secrets", default=DEFAULT_SECRETS, help=f"Secrets file path (default: {DEFAULT_SECRETS})")
+    p.add_argument("--secrets", dest="auth_file", default=DEFAULT_CONFIG_AUTH_FILE, help=f"Authentication file path (default: {DEFAULT_CONFIG_AUTH_FILE})")
     p.add_argument("--no-login", action="store_true", help="Do NOT perform login flow (use EDGESTREAM_QUEUE_TOKEN or anonymous)")
     return p.parse_args(argv)
 
 def main() -> int:
-    global _login_user, _secrets_path, _no_login, _bearer
+    global _login_user, _config_auth_path, _no_login, _bearer
 
     args = _parse_args(sys.argv[1:])
     _login_user = args.user
-    _secrets_path = args.secrets
+    _config_auth_path = args.auth_file
     _no_login = args.no_login
 
     # Validate ansible-playbook
