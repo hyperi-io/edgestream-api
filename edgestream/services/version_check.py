@@ -24,15 +24,15 @@ _K8S_SA = Path("/var/run/secrets/kubernetes.io/serviceaccount")
 def check_on_startup() -> threading.Thread | None:
     """Fire-and-forget check for a newer version. Never blocks, never raises.
 
-    Opt-in and always disable-able: runs only when VERSION_CHECK_ENABLED is
-    true AND VERSION_CHECK_API_URL is set. Any failure (unreachable endpoint,
-    firewall, bad response) costs one warning log line and nothing else.
+    On by default; VERSION_CHECK_ENABLED=false is the opt-out and always
+    wins. Any failure (unreachable endpoint, firewall, air-gapped host)
+    costs one warning log line and nothing else.
 
     Returns the daemon thread when a check was kicked off, else None; tests
     join() it instead of sleeping.
     """
     if not settings.VERSION_CHECK_ENABLED:
-        Logger.logger.debug("version check disabled (opt-in: VERSION_CHECK_ENABLED)")
+        Logger.logger.debug("version check disabled (VERSION_CHECK_ENABLED=false)")
         return None
     if not settings.VERSION_CHECK_API_URL:
         Logger.logger.debug("version check skipped: VERSION_CHECK_API_URL not set")

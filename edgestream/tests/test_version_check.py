@@ -31,8 +31,18 @@ def _serve(received: list[dict]):
     return server
 
 
-def test_disabled_by_default_spawns_nothing():
-    assert settings.VERSION_CHECK_ENABLED is False
+def test_on_by_default():
+    # Class defaults, not the singleton: conftest opts the suite out.
+    fields = type(settings).model_fields
+    assert fields["VERSION_CHECK_ENABLED"].default is True
+    assert (
+        fields["VERSION_CHECK_API_URL"].default
+        == "https://releases.hyperi.io/api/v1/check"
+    )
+
+
+def test_explicit_opt_out_spawns_nothing(monkeypatch):
+    monkeypatch.setattr(settings, "VERSION_CHECK_ENABLED", False)
     assert version_check.check_on_startup() is None
 
 

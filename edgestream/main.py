@@ -35,8 +35,8 @@ async def lifespan(app: FastAPI):
     if settings.SECRETS_READ_DENIED:
         Logger.logger.error("CRITICAL: Secrets file unreadable.")
 
-    # Fire-and-forget startup version check; no-op unless VERSION_CHECK_ENABLED
-    # and VERSION_CHECK_API_URL are set. Never blocks, never raises.
+    # Fire-and-forget startup version check; on by default,
+    # VERSION_CHECK_ENABLED=false opts out. Never blocks, never raises.
     version_check.check_on_startup()
     yield
 
