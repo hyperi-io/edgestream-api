@@ -47,7 +47,6 @@ def test_explicit_opt_out_spawns_nothing(monkeypatch):
 
 
 def test_non_http_url_spawns_nothing(monkeypatch):
-    # urllib follows file:// -- anything but http(s) must refuse pre-spawn.
     monkeypatch.setattr(settings, "VERSION_CHECK_ENABLED", True)
     monkeypatch.setattr(settings, "VERSION_CHECK_API_URL", "file:///etc/passwd")
     assert version_check.check_on_startup() is None

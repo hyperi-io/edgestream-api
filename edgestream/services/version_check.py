@@ -38,8 +38,6 @@ def check_on_startup() -> threading.Thread | None:
     if not settings.VERSION_CHECK_API_URL:
         Logger.logger.debug("version check skipped: VERSION_CHECK_API_URL not set")
         return None
-    # urllib follows file:// and ftp:// URLs, so a config-supplied endpoint
-    # must be web-only before any request is built.
     if urllib.parse.urlsplit(settings.VERSION_CHECK_API_URL).scheme not in ("http", "https"):
         Logger.logger.warning("version check skipped: VERSION_CHECK_API_URL must be http(s)")
         return None
@@ -112,8 +110,6 @@ def resolve_instance_id() -> str:
 
 
 def _uuid5_bytes(material: bytes) -> uuid.UUID:
-    # SHA-1 is the RFC 4122 UUIDv5 definition, and the id must match scalo's
-    # uuid5 derivation byte for byte -- not a security hash.
     digest = hashlib.sha1(INSTANCE_ID_NS.bytes + material).digest()  # noqa: S324  # nosemgrep: python.lang.security.insecure-hash-algorithms.insecure-hash-algorithm-sha1
     return uuid.UUID(bytes=digest[:16], version=5)
 
