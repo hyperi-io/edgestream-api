@@ -3,6 +3,10 @@ import os
 import pytest
 from fastapi.testclient import TestClient
 
+# The version check is on by default and TestClient runs the lifespan --
+# opt the whole suite out so no test phones home.
+os.environ.setdefault("VERSION_CHECK_ENABLED", "false")
+
 # Make sure these are set BEFORE importing the app/config
 @pytest.fixture(scope="session", autouse=True)
 def _env_setup(tmp_path_factory):

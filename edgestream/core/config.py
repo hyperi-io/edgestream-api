@@ -103,6 +103,13 @@ class Settings(BaseSettings):
     ENV: Literal["prod", "dev"] = "prod"
     API_V1_STR: str = "/api/v1"
 
+    # ---- Startup version check (on by default; see services/version_check.py) ----
+    VERSION_CHECK_ENABLED: bool = True
+    VERSION_CHECK_API_URL: str = "https://releases.hyperi.io/api/v1/check"
+    VERSION_CHECK_TIMEOUT: float = 5.0
+    VERSION_CHECK_SEND_INSTANCE_ID: bool = True
+    VERSION_CHECK_INSTANCE_ID: Optional[str] = None
+
     # ---- Auth / Security ----
     AUTH0_DOMAIN: Optional[str] = None
     AUTH0_CLIENT_ID: Optional[str] = None

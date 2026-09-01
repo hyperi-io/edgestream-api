@@ -14,6 +14,7 @@ from edgestream.api.v1.api_router import api_router
 from edgestream.core.config import settings, Logger
 from edgestream.db import base  # noqa: F401
 from edgestream.db.session import SessionLocal
+from edgestream.services import version_check
 from edgestream.services.background.audit_tasks import enqueue_audit
 from edgestream.services.middleware import CorrelationIdMiddleware
 
@@ -33,6 +34,10 @@ async def lifespan(app: FastAPI):
 
     if settings.SECRETS_READ_DENIED:
         Logger.logger.error("CRITICAL: Secrets file unreadable.")
+
+    # Fire-and-forget startup version check; on by default,
+    # VERSION_CHECK_ENABLED=false opts out. Never blocks, never raises.
+    version_check.check_on_startup()
     yield
 
 
