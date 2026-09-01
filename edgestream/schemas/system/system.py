@@ -1,3 +1,12 @@
+"""
+Project:   edgestream-api
+File:      edgestream/schemas/system/system.py
+Language:  Python
+
+License:   BUSL-1.1
+Copyright: (c) 2026 HYPERI PTY LIMITED
+"""
+
 from enum import Enum
 from typing import Optional, List
 from pydantic import Field, ConfigDict

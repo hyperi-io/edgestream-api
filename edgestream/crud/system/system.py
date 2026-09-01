@@ -1,3 +1,12 @@
+"""
+Project:   edgestream-api
+File:      edgestream/crud/system/system.py
+Language:  Python
+
+License:   BUSL-1.1
+Copyright: (c) 2026 HYPERI PTY LIMITED
+"""
+
 from typing import Any, Dict, Optional, Union
 
 from fastapi import HTTPException, status

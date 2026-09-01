@@ -1,3 +1,12 @@
+"""
+Project:   edgestream-api
+File:      alembic/versions/1aefb8fac77f_transform_text_columns.py
+Language:  Python
+
+License:   BUSL-1.1
+Copyright: (c) 2026 HYPERI PTY LIMITED
+"""
+
 """transform text columns
 
 Revision ID: 1aefb8fac77f

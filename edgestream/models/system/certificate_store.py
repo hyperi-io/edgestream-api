@@ -1,3 +1,12 @@
+"""
+Project:   edgestream-api
+File:      edgestream/models/system/certificate_store.py
+Language:  Python
+
+License:   BUSL-1.1
+Copyright: (c) 2026 HYPERI PTY LIMITED
+"""
+
 # models/system/certificate_store.py
 from datetime import datetime
 from typing import Optional

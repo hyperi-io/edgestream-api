@@ -1,3 +1,12 @@
+"""
+Project:   edgestream-api
+File:      edgestream/database_init.py
+Language:  Python
+
+License:   BUSL-1.1
+Copyright: (c) 2026 HYPERI PTY LIMITED
+"""
+
 import sys
 from edgestream.db.init_db import init_db
 from edgestream.core.config import Logger

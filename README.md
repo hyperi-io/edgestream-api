@@ -172,8 +172,7 @@ Background tasks are tracked in the **tasks** table with states:
 
 ## 📄 License
 
-EdgeStream WebUI is licensed under the **Functional Source License 1.1,
-ALv2 Future License (FSL-1.1-ALv2)**.
+EdgeStream WebUI is licensed under the **Business Source License 1.1 (BUSL-1.1)**.
 
 See:
 

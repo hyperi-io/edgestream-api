@@ -1,5 +1,14 @@
 #!/usr/bin/env python3
 """
+Project:   edgestream-api
+File:      debian/contrib/ansible-queue/ansible-queue-runner.py
+Language:  Python
+
+License:   BUSL-1.1
+Copyright: (c) 2026 HYPERI PTY LIMITED
+"""
+
+"""
 EdgeStream Ansible Queue Runner (stdlib + requests + subprocess)
 
 Runs ansible-playbook from EDGESTREAM_TASK_DIR (so local ansible.cfg is used).

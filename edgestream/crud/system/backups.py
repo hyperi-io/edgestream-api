@@ -1,3 +1,12 @@
+"""
+Project:   edgestream-api
+File:      edgestream/crud/system/backups.py
+Language:  Python
+
+License:   BUSL-1.1
+Copyright: (c) 2026 HYPERI PTY LIMITED
+"""
+
 from typing import Any, Dict, Optional, Union, List
 from sqlalchemy import select
 from sqlalchemy.orm import Session

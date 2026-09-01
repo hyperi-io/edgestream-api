@@ -1,3 +1,12 @@
+"""
+Project:   edgestream-api
+File:      alembic/versions/baf4beec17e4_use_text_for_params_value.py
+Language:  Python
+
+License:   BUSL-1.1
+Copyright: (c) 2026 HYPERI PTY LIMITED
+"""
+
 """use Text for params value
 
 Revision ID: baf4beec17e4

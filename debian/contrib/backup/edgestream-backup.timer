@@ -1,3 +1,12 @@
+#
+# Project:   edgestream-api
+# File:      usr/lib/systemd/system/edgestream-backup.timer
+# Language:  Python
+#
+# License:   BUSL-1.1
+# Copyright: (c) 2026 HYPERI PTY LIMITED
+#
+
 [Unit]
 Description=Run EdgeStream backup on a schedule
 

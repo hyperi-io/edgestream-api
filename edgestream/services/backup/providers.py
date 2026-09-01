@@ -1,3 +1,12 @@
+"""
+Project:   edgestream-api
+File:      edgestream/services/backup/providers.py
+Language:  Python
+
+License:   BUSL-1.1
+Copyright: (c) 2026 HYPERI PTY LIMITED
+"""
+
 # edgestream/core/system/backup/providers.py
 
 from __future__ import annotations

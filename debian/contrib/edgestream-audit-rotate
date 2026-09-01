@@ -1,4 +1,11 @@
-# /etc/cron.d/edgestream-audit-rotate
+#
+# Project:   edgestream-api
+# File:      etc/cron.d/edgestream-audit-rotate
+# Language:  Python
+#
+# License:   BUSL-1.1
+# Copyright: (c) 2026 HYPERI PTY LIMITED
+#
 
 # Run every Sunday at 00:00 (Midnight)
 # m h dom mon dow user  command

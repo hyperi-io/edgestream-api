@@ -1,3 +1,12 @@
+"""
+Project:   edgestream-api
+File:      edgestream/services/port_manager.py
+Language:  Python
+
+License:   BUSL-1.1
+Copyright: (c) 2026 HYPERI PTY LIMITED
+"""
+
 from fastapi import HTTPException
 
 from edgestream import crud

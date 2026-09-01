@@ -1,3 +1,12 @@
+"""
+Project:   edgestream-api
+File:      edgestream/crud/network/ntp.py
+Language:  Python
+
+License:   BUSL-1.1
+Copyright: (c) 2026 HYPERI PTY LIMITED
+"""
+
 from typing import List, Optional
 from fastapi import HTTPException, status
 from sqlalchemy.orm import Session

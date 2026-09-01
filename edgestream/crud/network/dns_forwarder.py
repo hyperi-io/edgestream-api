@@ -1,3 +1,12 @@
+"""
+Project:   edgestream-api
+File:      edgestream/crud/network/dns_forwarder.py
+Language:  Python
+
+License:   BUSL-1.1
+Copyright: (c) 2026 HYPERI PTY LIMITED
+"""
+
 from typing import List, Optional, Dict, Any
 from fastapi import HTTPException
 from sqlalchemy.orm import Session

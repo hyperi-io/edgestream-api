@@ -1,3 +1,12 @@
+"""
+Project:   edgestream-api
+File:      edgestream/schemas/base.py
+Language:  Python
+
+License:   BUSL-1.1
+Copyright: (c) 2026 HYPERI PTY LIMITED
+"""
+
 # edgestream/core/schemas/base.py
 from pydantic import BaseModel, ConfigDict, Field
 from typing import Optional

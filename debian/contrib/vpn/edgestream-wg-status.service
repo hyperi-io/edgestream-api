@@ -1,3 +1,12 @@
+#
+# Project:   edgestream-api
+# File:      usr/lib/systemd/system/edgestream-wg-status.service
+# Language:  Python
+#
+# License:   BUSL-1.1
+# Copyright: (c) 2026 HYPERI PTY LIMITED
+#
+
 [Unit]
 Description=EdgeStream WireGuard status cache
 After=network-online.target

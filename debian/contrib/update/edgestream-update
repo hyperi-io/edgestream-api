@@ -1,1 +1,10 @@
+#
+# Project:   edgestream-api
+# File:      etc/sudoers.d/edgestream-update
+# Language:  Python
+#
+# License:   BUSL-1.1
+# Copyright: (c) 2026 HYPERI PTY LIMITED
+#
+
 edgestream ALL=(root) NOPASSWD: /usr/bin/systemctl start --wait edgestream-update@*

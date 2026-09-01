@@ -1,3 +1,12 @@
+"""
+Project:   edgestream-api
+File:      edgestream/api/v1/endpoints/certificate_store.py
+Language:  Python
+
+License:   BUSL-1.1
+Copyright: (c) 2026 HYPERI PTY LIMITED
+"""
+
 from io import BytesIO
 from typing import Annotated
 from pathlib import Path

@@ -1,3 +1,12 @@
+"""
+Project:   edgestream-api
+File:      edgestream/schemas/network/dns_forwarder.py
+Language:  Python
+
+License:   BUSL-1.1
+Copyright: (c) 2026 HYPERI PTY LIMITED
+"""
+
 from typing import Optional, List
 from pydantic import Field
 from edgestream.schemas.base import ESBaseModel

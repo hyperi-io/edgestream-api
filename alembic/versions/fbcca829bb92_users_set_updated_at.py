@@ -1,3 +1,12 @@
+"""
+Project:   edgestream-api
+File:      alembic/versions/fbcca829bb92_users_set_updated_at.py
+Language:  Python
+
+License:   BUSL-1.1
+Copyright: (c) 2026 HYPERI PTY LIMITED
+"""
+
 """User database timestamp triggers
 
 Revision ID: fbcca829bb92

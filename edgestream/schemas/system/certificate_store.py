@@ -1,3 +1,12 @@
+"""
+Project:   edgestream-api
+File:      edgestream/schemas/system/certificate_store.py
+Language:  Python
+
+License:   BUSL-1.1
+Copyright: (c) 2026 HYPERI PTY LIMITED
+"""
+
 from datetime import datetime
 from enum import Enum
 from typing import Optional, List

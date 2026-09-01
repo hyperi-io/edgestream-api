@@ -1,3 +1,12 @@
+"""
+Project:   edgestream-api
+File:      edgestream/crud/event/destination_params.py
+Language:  Python
+
+License:   BUSL-1.1
+Copyright: (c) 2026 HYPERI PTY LIMITED
+"""
+
 from typing import Optional, List, Any
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import SQLAlchemyError, IntegrityError

@@ -1,3 +1,12 @@
+"""
+Project:   edgestream-api
+File:      edgestream/api/v1/endpoints/backup_restore.py
+Language:  Python
+
+License:   BUSL-1.1
+Copyright: (c) 2026 HYPERI PTY LIMITED
+"""
+
 import os
 from typing import Annotated, List, Dict, Any
 

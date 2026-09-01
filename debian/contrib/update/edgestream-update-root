@@ -1,4 +1,13 @@
 #!/usr/bin/env bash
+#
+# Project:   edgestream-api
+# File:      opt/edgestream-api/bin/edgestream-update-root
+# Language:  Python
+#
+# License:   BUSL-1.1
+# Copyright: (c) 2026 HYPERI PTY LIMITED
+#
+
 set -euo pipefail
 
 LOG_DIR="/var/log/edgestream-api"

@@ -1,3 +1,12 @@
+"""
+Project:   edgestream-api
+File:      edgestream/schemas/network/static_host.py
+Language:  Python
+
+License:   BUSL-1.1
+Copyright: (c) 2026 HYPERI PTY LIMITED
+"""
+
 from pydantic import Field
 from edgestream.schemas.base import ESBaseModel
 
