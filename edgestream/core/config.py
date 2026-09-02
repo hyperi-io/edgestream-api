@@ -107,7 +107,7 @@ class Settings(BaseSettings):
         return (init_settings, env_settings, safe_dotenv_global, safe_dotenv_local, file_secret_settings)
 
     # ---- System Metadata ----
-    VERSION: str = "0.0.1"
+    VERSION: str = "0.1.0"
     SECRETS_READ_DENIED: bool = False
     ENV: Literal["prod", "dev"] = "prod"
     API_V1_STR: str = "/api/v1"
