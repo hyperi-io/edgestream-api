@@ -1,3 +1,12 @@
+"""
+Project:   edgestream-api
+File:      edgestream/services/interfaces.py
+Language:  Python
+
+License:   BUSL-1.1
+Copyright: (c) 2026 HYPERI PTY LIMITED
+"""
+
 import os
 import socket
 import psutil

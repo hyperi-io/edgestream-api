@@ -1,3 +1,12 @@
+"""
+Project:   edgestream-api
+File:      edgestream/core/config.py
+Language:  Python
+
+License:   BUSL-1.1
+Copyright: (c) 2026 HYPERI PTY LIMITED
+"""
+
 from __future__ import annotations
 
 import logging

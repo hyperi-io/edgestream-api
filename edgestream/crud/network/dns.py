@@ -1,3 +1,12 @@
+"""
+Project:   edgestream-api
+File:      edgestream/crud/network/dns.py
+Language:  Python
+
+License:   BUSL-1.1
+Copyright: (c) 2026 HYPERI PTY LIMITED
+"""
+
 # edgestream/core/crud/network/dns.py
 from typing import List, Optional, Dict, Any
 from fastapi import HTTPException

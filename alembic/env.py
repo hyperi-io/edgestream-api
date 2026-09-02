@@ -1,3 +1,12 @@
+"""
+Project:   edgestream-api
+File:      alembic/env.py
+Language:  Python
+
+License:   BUSL-1.1
+Copyright: (c) 2026 HYPERI PTY LIMITED
+"""
+
 from alembic import context
 from edgestream.db.session import engine as app_engine, Base
 

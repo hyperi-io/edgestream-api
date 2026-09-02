@@ -1,3 +1,12 @@
+"""
+Project:   edgestream-api
+File:      edgestream/crud/event/source.py
+Language:  Python
+
+License:   BUSL-1.1
+Copyright: (c) 2026 HYPERI PTY LIMITED
+"""
+
 from typing import List, Dict, Tuple, Any, Optional
 from fastapi import HTTPException
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError

@@ -1,3 +1,12 @@
+"""
+Project:   edgestream-api
+File:      edgestream/db/base.py
+Language:  Python
+
+License:   BUSL-1.1
+Copyright: (c) 2026 HYPERI PTY LIMITED
+"""
+
 # edgestream/core/db/base.py
 
 # Import all ORM models so they are registered with Base’s metadata before Alembic, etc.

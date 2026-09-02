@@ -1,3 +1,12 @@
+"""
+Project:   edgestream-api
+File:      edgestream/crud/base.py
+Language:  Python
+
+License:   BUSL-1.1
+Copyright: (c) 2026 HYPERI PTY LIMITED
+"""
+
 from typing import Any, Dict, Generic, Optional, Type, TypeVar, Union, List
 
 from fastapi.encoders import jsonable_encoder

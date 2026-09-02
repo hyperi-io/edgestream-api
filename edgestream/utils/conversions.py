@@ -1,3 +1,12 @@
+"""
+Project:   edgestream-api
+File:      edgestream/utils/conversions.py
+Language:  Python
+
+License:   BUSL-1.1
+Copyright: (c) 2026 HYPERI PTY LIMITED
+"""
+
 def bytes_to_human_readable(size, decimals=2, binary_system=True):
     units = (
         ["B", "KiB", "MiB", "GiB", "TiB", "PiB", "EiB", "ZiB"]

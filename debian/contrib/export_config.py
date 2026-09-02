@@ -1,4 +1,13 @@
 #!/opt/edgestream-api/bin/python3
+"""
+Project:   edgestream-api
+File:      debian/contrib/export_config.py
+Language:  Python
+
+License:   BUSL-1.1
+Copyright: (c) 2026 HYPERI PTY LIMITED
+"""
+
 import sys
 import json
 import os

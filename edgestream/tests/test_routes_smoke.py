@@ -1,3 +1,12 @@
+"""
+Project:   edgestream-api
+File:      edgestream/tests/test_routes_smoke.py
+Language:  Python
+
+License:   BUSL-1.1
+Copyright: (c) 2026 HYPERI PTY LIMITED
+"""
+
 # edgestream/tests/test_routes_smoke.py
 from fastapi.routing import APIRoute
 from starlette.routing import WebSocketRoute, Mount

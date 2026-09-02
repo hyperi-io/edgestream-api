@@ -1,3 +1,12 @@
+"""
+Project:   edgestream-api
+File:      edgestream/api/v1/endpoints/interface_management.py
+Language:  Python
+
+License:   BUSL-1.1
+Copyright: (c) 2026 HYPERI PTY LIMITED
+"""
+
 from fastapi import APIRouter, Depends, HTTPException, BackgroundTasks, Body
 from sqlalchemy.orm import Session
 from typing import Optional

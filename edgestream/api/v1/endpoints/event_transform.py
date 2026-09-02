@@ -1,3 +1,12 @@
+"""
+Project:   edgestream-api
+File:      edgestream/api/v1/endpoints/event_transform.py
+Language:  Python
+
+License:   BUSL-1.1
+Copyright: (c) 2026 HYPERI PTY LIMITED
+"""
+
 import json
 import os
 import re

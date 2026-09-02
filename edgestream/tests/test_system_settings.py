@@ -1,3 +1,12 @@
+"""
+Project:   edgestream-api
+File:      edgestream/tests/test_system_settings.py
+Language:  Python
+
+License:   BUSL-1.1
+Copyright: (c) 2026 HYPERI PTY LIMITED
+"""
+
 # edgestream/tests/test_system_settings.py
 import os, sys, time
 from pathlib import Path

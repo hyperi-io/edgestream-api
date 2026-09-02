@@ -1,3 +1,12 @@
+"""
+Project:   edgestream-api
+File:      edgestream/services/background/audit_tasks.py
+Language:  Python
+
+License:   BUSL-1.1
+Copyright: (c) 2026 HYPERI PTY LIMITED
+"""
+
 from typing import Any, Dict, Optional
 from fastapi import Request, BackgroundTasks
 from sqlalchemy.orm import sessionmaker

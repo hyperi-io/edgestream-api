@@ -1,3 +1,12 @@
+"""
+Project:   edgestream-api
+File:      edgestream/backend_pre_start.py
+Language:  Python
+
+License:   BUSL-1.1
+Copyright: (c) 2026 HYPERI PTY LIMITED
+"""
+
 import logging
 from tenacity import after_log, before_log, retry, stop_after_attempt, wait_fixed
 from sqlalchemy import text

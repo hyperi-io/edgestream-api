@@ -1,3 +1,12 @@
+"""
+Project:   edgestream-api
+File:      edgestream/api/v1/endpoints/update.py
+Language:  Python
+
+License:   BUSL-1.1
+Copyright: (c) 2026 HYPERI PTY LIMITED
+"""
+
 from typing import List
 
 from fastapi import APIRouter, Depends, HTTPException, status
