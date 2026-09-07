@@ -13,7 +13,7 @@ pyotp==2.10.0
 # --- Core Logic ---
 bcrypt==5.0.0
 uvicorn==0.52.4
-pydantic==2.13.4
+pydantic==2.13.5
 pydantic-settings==2.15.0
 SQLAlchemy==2.0.52
 alembic==1.19.1
@@ -23,11 +23,11 @@ ruamel.yaml==0.19.1
 pytz==2026.3.post1
 tzlocal==5.4.4
 aiofiles>=25.1.0
-typer==0.27.1
+typer==0.27.2
 httpx==0.28.1
 
 # --- Utilities ---
 bleach==6.4.0
 validators==0.35.0
 netifaces2==0.0.22
-websockets==17.0.1
+websockets==17.1
