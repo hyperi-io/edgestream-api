@@ -7,7 +7,7 @@ pyOpenSSL>=24.0.0
 cryptography>=43.0.0,<51.0.0
 requests==2.34.2
 Jinja2==3.1.6
-filelock==3.32.4
+filelock==3.32.5
 pyotp==2.10.0
 
 # --- Core Logic ---
@@ -16,7 +16,7 @@ uvicorn==0.52.4
 pydantic==2.13.5
 pydantic-settings==2.15.0
 SQLAlchemy==2.0.52
-alembic==1.19.1
+alembic==1.19.2
 ansible-runner==2.4.3
 psutil==7.2.2
 ruamel.yaml==0.19.1
