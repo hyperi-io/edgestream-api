@@ -1,26 +1,26 @@
 # --- Security Hardened Top-Level ---
-fastapi==0.141.1
-starlette==1.6.0
+fastapi==0.142.2
+starlette==1.7.0
 python-multipart==0.0.32
 PyJWT[crypto]>=2.9.0
 pyOpenSSL>=24.0.0
 cryptography>=43.0.0,<51.0.0
 requests==2.34.2
 Jinja2==3.1.6
-filelock==4.0.3
+filelock==4.0.8
 pyotp==2.10.0
 
 # --- Core Logic ---
 bcrypt==5.0.0
-uvicorn==0.53.0
+uvicorn==0.54.0
 pydantic==2.13.5
 pydantic-settings==2.15.0
-SQLAlchemy==2.0.54
+SQLAlchemy==2.1.1
 alembic==1.20.0
 ansible-runner==2.4.3
 psutil==7.2.2
 ruamel.yaml==0.19.1
-pytz==2026.3.post1
+pytz==2026.4
 tzlocal==5.4.4
 aiofiles>=25.1.0
 typer==0.27.2
