@@ -1,7 +1,7 @@
 debian/contrib/database_init.bin opt/edgestream-api/bin/
 debian/contrib/export_config.py opt/edgestream-api/bin/
-debian/contrib/reset_admin.py  opt/edgestream-api/bin
-debian/contrib/edgestream-audit-rotate  etc/cron.d/
+debian/contrib/edgestream-users.py opt/edgestream-api/bin
+debian/contrib/edgestream-audit-rotate etc/cron.d/
 
 debian/contrib/update/edgestream-update-root opt/edgestream-api/bin/
 debian/contrib/update/edgestream-update@.service usr/lib/systemd/system/
