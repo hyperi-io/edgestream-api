@@ -6,4 +6,4 @@ pytest==9.1.1
 pytest-asyncio==1.4.0
 pip-audit==2.10.1
 ruff==0.16.10
-semgrep==1.179.0
+semgrep==1.180.0
