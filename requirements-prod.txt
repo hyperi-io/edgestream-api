@@ -1,21 +1,21 @@
 # --- Security Hardened Top-Level ---
-fastapi==0.143.0
-starlette==1.8.0
+fastapi==0.149.0
+starlette==1.9.0
 python-multipart==0.0.32
 PyJWT[crypto]>=2.9.0
 pyOpenSSL>=24.0.0
 cryptography>=43.0.0,<51.0.0
 requests==2.34.2
 Jinja2==3.1.6
-filelock==4.1.1
+filelock==4.2.4
 pyotp==2.10.0
 
 # --- Core Logic ---
 bcrypt==5.0.0
 uvicorn==0.54.0
 pydantic==2.14.1
-pydantic-settings==2.15.0
-SQLAlchemy==2.1.4
+pydantic-settings==2.16.0
+SQLAlchemy==2.1.5
 alembic==1.20.0
 ansible-runner==2.4.3
 psutil==7.2.2
@@ -30,4 +30,4 @@ httpx==0.28.1
 bleach==6.4.0
 validators==0.36.0
 netifaces2==0.0.22
-websockets==17.2
+websockets==17.3
