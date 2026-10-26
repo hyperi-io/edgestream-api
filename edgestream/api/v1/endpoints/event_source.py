@@ -87,7 +87,7 @@ def fetch_all_sources(
         db: Session = Depends(get_db),
         current_user: User = Depends(get_current_user),
 ) -> List[Any]:
-    sources = crud.source.get_all(db=db)
+    sources = crud.source.get_all_exclude_syslog_ng(db=db)
     return [formatted for s in sources if (formatted := get_formatted_entity(s, "source"))]
 
 

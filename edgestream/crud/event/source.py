@@ -54,15 +54,16 @@ class CRUDSource(CRUDBase[Source, SourceCreate, SourceUpdate]):
             db.execute(
                 select(Source)
                 .options(selectinload(Source.parameters))
-                .where(Source.type != "syslog_ng")
             ).scalars().all()
         )
 
-    def get_all_sources_full(self, db: Session) -> List[Source]:
-        """Returns ALL sources including syslog-ng for validation purposes."""
+    def get_all_exclude_syslog_ng(self, db: Session) -> List[Source]:
+        """Returns all sources except the internal syslog-ng source."""
         return list(
             db.execute(
-                select(Source).options(selectinload(Source.parameters))
+                select(Source)
+                .options(selectinload(Source.parameters))
+                .where(Source.type != "syslog_ng")
             ).scalars().all()
         )
 

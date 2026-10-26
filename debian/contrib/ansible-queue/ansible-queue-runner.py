@@ -7,6 +7,7 @@ Language:  Python
 License:   BUSL-1.1
 Copyright: (c) 2026 HYPERI PTY LIMITED
 """
+from __future__ import annotations
 
 """
 EdgeStream Ansible Queue Runner (stdlib + requests + subprocess)
@@ -20,8 +21,6 @@ Job JSON (back/forward compatible):
 - inventory: str (optional)             -> inventory path
 - extra_vars: dict (optional)           -> written to extra_vars.yml and passed via -e @file
 """
-
-from __future__ import annotations
 
 import argparse
 import json

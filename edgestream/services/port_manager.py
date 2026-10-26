@@ -62,7 +62,7 @@ def port_in_use(db, port: int, protocol: str = None):
                     elif len(advanced_setting.default_value) > 0 and int(advanced_setting.default_value) == port:
                         return {"inuse": True, "service": advanced_setting.label}
 
-        sources = crud.source.get_all_sources_full(db=db)
+        sources = crud.source.get_all(db=db)
         for source in sources:
             source_settings = getattr(source, "settings", None) or getattr(source, "parameters", [])
 
