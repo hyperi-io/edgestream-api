@@ -1,7 +1,7 @@
 # EdgeStream Hub – API
 
 [![EdgeStream Hub](https://img.shields.io/badge/Component_of-EdgeStream_Hub-38bdf8?style=flat-square)](https://hyperi-io.github.io/edgestream-hub/)
-[![Documentation](https://img.shields.io/badge/Docs-hyperi-io.github.io%2Fedgestream--hub-blue?style=flat-square)](https://hyperi-io.github.io/edgestream-hub/)
+[![Documentation](https://img.shields.io/badge/Docs-online-blue?style=flat-square)](https://hyperi-io.github.io/edgestream-hub/)
 
 > **Notice:** This repository contains an internal subsystem of the **[EdgeStream Hub](https://hyperi-io.github.io/edgestream-hub/)** enterprise telemetry pipeline appliance.
 >
