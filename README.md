@@ -1,4 +1,17 @@
-# EdgeStream API
+# EdgeStream Hub – API
+
+[![EdgeStream Hub](https://img.shields.io/badge/Component_of-EdgeStream_Hub-38bdf8?style=flat-square)](https://hyperi-io.github.io/edgestream-hub/)
+[![Documentation](https://img.shields.io/badge/Docs-hyperi-io.github.io%2Fedgestream--hub-blue?style=flat-square)](https://hyperi-io.github.io/edgestream-hub/)
+
+> **Notice:** This repository contains an internal subsystem of the **[EdgeStream Hub](https://hyperi-io.github.io/edgestream-hub/)** enterprise telemetry pipeline appliance.
+>
+> EdgeStream Hub combines high-throughput data collectors, line-rate filtering, and multi-destination fanout into a unified Debian appliance. This service is provisioned, orchestrated, and managed as part of the core appliance stack.
+>
+> For full deployment options, source/destination setup, and administrative documentation, please refer to the primary site:
+>
+> 📖 **[https://hyperi-io.github.io/edgestream-hub](https://hyperi-io.github.io/edgestream-hub/)**
+
+---
 
 **EdgeStream API** is a FastAPI backend service for the EdgeStream Hub appliance:  
 a secure, extensible collector for logs, metrics, events, and network data.  
