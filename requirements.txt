@@ -2,8 +2,8 @@
 -r requirements-prod.txt
 
 # Development, Testing, and Linting Tools
-pytest==9.1.1
-pytest-asyncio==1.4.0
+pytest==9.2.0
+pytest-asyncio==1.4.1.post1
 pip-audit==2.10.1
-ruff==0.17.1
-semgrep==1.181.0
+ruff==0.17.4
+semgrep==1.184.0
